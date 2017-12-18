@@ -31,13 +31,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
         template: updateTmpl,
         controller: 'ChangeContactCtrl',
         resolve: {
-            id: function($stateParams) {
-                return $stateParams.id;
-            },
-            contact: function($state, id, contactsService) {
+            contact: function($state, $stateParams, contactsService) {
                 const contacts = contactsService.getAll();
 
-                return contacts.find(contact => contact._id === Number(id));
+                return contacts.find((contact) => (
+                    contact._id === Number($stateParams.id)
+                ));
             },
         },
         onEnter: function($state, contact) {
