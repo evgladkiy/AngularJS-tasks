@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Task 1</title>
+    <link rel="stylesheet" href="./main.css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,500,500i,700&amp;subset=cyrillic" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script>
+</head>
+<body ng-app="App">
+    <div class="main-container">
+        <h3>Contact list</h3>
+        <div ng-controller="AppController as $ctrl">
+            <div class="checkbox-container">
+                <input id="checkbox" type="checkbox" checked ng-model="$ctrl.isShowList">
+                <label for="checkbox">ShowPhones</label>
+            </div>
+            <ul ng-show='$ctrl.isShowList'>
+                <li
+                ng-repeat="user in $ctrl.users"
+                ng-class="{
+                    red: {{user.name[0].toLowerCase() === 'a'}},
+                    blue: {{user.name[0].toLowerCase() === 'b'}},
+                }">
+                <span class="user-name">{{user.name}}</span>
+                <span class="user-phone">{{user.phoneNumber}}</span>
+            </li>
+        </ul>
+    </div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
