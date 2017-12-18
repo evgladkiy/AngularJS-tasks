@@ -1,0 +1,28 @@
+<div class="medium-container">
+    <h2>Home page</h2>
+    <div class="search-wrapper">
+        <div class="search-container">
+            <i class="fa fa-search" aria-hidden="true"></i>
+            <input type="search" placeholder="Search contact" ng-model="contactFilter">
+        </div>
+        <a class="btn btn_link" ui-sref="add-contact">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            <span>Add contact<span>
+        </a>
+    </div>
+    <h3>Contact list</h3>
+    <ul>
+        <li ng-repeat="contact in contacts | orderBy: 'name' | contactsFilter: contactFilter track by $index">
+            <div>
+                <span class="user-name">{{contact.name}}</span>
+                <span class="user-phone">{{contact.phoneNumber}}</span>
+                <a class="user-email" href="mailto:{{contact.email}}">{{contact.email}}</a>
+                <div class="btn-delete__container">
+                     <a ui-sref="change-contact({ id: contact._id })">
+                         <i class="fa fa-pencil" aria-hidden="true"></i>
+                     </a>
+                </div>
+            </div>
+        </li>
+    </ul>
+</div>
