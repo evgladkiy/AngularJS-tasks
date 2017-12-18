@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Task 2</title>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700&amp;subset=cyrillic" rel="stylesheet">
+    <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body ng-app="app">
+    <div class="main-container">
+        <h3>Contact list</h3>
+        <div ng-controller="ContactsCtrl">
+            <div class="search-container">
+                <i class="fa fa-search" aria-hidden="true"></i>
+                <input type="search" ng-model="contactFilter" placeholder="Search contact">
+            </div>
+            <form name="newContactForm" class="new-contact-form" ng-submit="addContact(newContact)" novalidate>
+                <div class="input-container">
+                    <label for="contact-name">Contact name</label>
+                    <input
+                        type="text" name="contactName"
+                        id="contact-name" required
+                        ng-model="newContact.name">
+                    <div
+                        class="help-block"
+                        ng-messages="newContactForm.contactName.$error"
+                        ng-if="shouldShowErrors(newContactForm.contactName)">
+
+                        <p ng-message="required">Contact name is required.</p>
+                    </div>
+                </div>
+                <div class="input-container">
+                    <label for="number">Contact number</label>
+                    <input
+                        type="text" id="number"
+                        name="contactNumber"
+                        ng-model="newContact.phoneNumber"
+                        required ng-minlength="5">
+                    <div
+                        class="help-block"
+                        ng-messages="newContactForm.contactNumber.$error"
+                        ng-if="shouldShowErrors(newContactForm.contactNumber)">
+
+                        <p ng-message="minlength">Contact number is too short.</p>
+                        <p ng-message="required">Contact number is required.</p>
+                    </div>
+                </div>
+                <input type="submit" value="Add contact">
+            </form>
+            <ul>
+                <li ng-repeat="contact in contacts | orderBy: 'name' | contactsFilter: contactFilter track by $index">
+                    <div>
+                        <span class="user-name">{{contact.name}}</span>
+                        <span class="user-phone">{{contact.phoneNumber}}</span>
+                        <div class="btn-delete__container">
+                            <button ng-click="removeContact(contact)">
+                                <i class="fa fa-pencil-square" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <script src="./bundle.js"></script>
+</body>
+</html>
