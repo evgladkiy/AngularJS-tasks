@@ -40,6 +40,11 @@ app.config(function($stateProvider, $urlRouterProvider) {
                 return contacts.find(contact => contact._id === Number(id));
             },
         },
+        onEnter: function($state, contact) {
+            if (contact === undefined) {
+                $state.go('home');
+            }
+        },
     };
 
 

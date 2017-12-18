@@ -6,10 +6,6 @@ export default app.controller('ChangeContactCtrl',
 function ChangeContactCtrl($scope, $state, contactsService, contact) {
     $scope.contactClone = Object.assign({}, contact);
 
-    if (contact === undefined) {
-        $state.go('home');
-    }
-
     $scope.removeCurrentContact = () => {
         contactsService.removeContact(contact);
         $state.go('home');
