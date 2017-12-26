@@ -23,6 +23,12 @@ gulp.task('copyHtml', function() {
         .pipe(gulp.dest('./dist'))
 });
 
+gulp.task('copyInitData', function() {
+    return gulp.src('./app/initData/**/*.*')
+        .pipe(browserSync.stream())
+        .pipe(gulp.dest('./dist/initData'))
+});
+
 gulp.task('buildCss', function() {
     return gulp.src('./assets/css/styles.css')
         .pipe(plumber())
@@ -78,5 +84,5 @@ gulp.task('serve', ['copyHtml', 'buildCss', 'buildJs'], function() {
 
 });
 
-gulp.task('build', ['copyHtml', 'buildCss', 'buildJs', 'buildJsLibs', 'copyFonts'])
+gulp.task('build', ['copyHtml', 'copyInitData', 'buildCss', 'buildJs', 'buildJsLibs', 'copyFonts'])
 gulp.task('dev', ['build', 'serve']);

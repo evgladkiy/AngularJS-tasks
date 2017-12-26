@@ -1,36 +1,26 @@
-angular.module('app')
-    .factory('ContactsService',['$window', '$http', ContactsService]);
-
 function ContactsService($window, $http) {
+
+    // localStorage data and functions for working with it;
+
     const storage = $window.localStorage;
     const storageContacts = JSON.parse(storage.getItem('contacts'));
-    let contacts = [
-        { _id: 1, name: 'Denise Howell', phoneNumber: '(128) 210-3856', email: 'pizzakiller@gmal.com' },
-        { _id: 2, name: 'Lawrence Hamilton', phoneNumber: '(223) 885-8007', email: 'notsobad@ramble.ru' },
-        { _id: 3, name: 'Mia Hart', phoneNumber: '(838) 618-3323', email: 'prettyinpink@mail.tut.by' },
-        { _id: 4, name: 'Theresa Lynch', phoneNumber: '(718) 672-2710', email: 'cottoncandy@mail.tu' },
-        { _id: 5, name: 'Annie Reid', phoneNumber: '(842) 748-3978', email: 'princess_annie@gmail.com' },
-        { _id: 6, name: 'Jonathan Fletcher', phoneNumber: '(745) 622-5449', email: 'pegasus@mail.ru' },
-        { _id: 7, name: 'Allen Parker', phoneNumber: '(298) 916-3073', email: 'googler99@google.com' },
-        { _id: 8, name: 'Andrea Hawkins', phoneNumber: '(737) 433-5496', email: 'yourfantasy@yahoo.com' },
-        { _id: 9, name: 'Cameron Coleman', phoneNumber: '(930) 873-0347', email: 'highwayman@highway.road' },
-        { _id: 10, name: 'Antonio Ross', phoneNumber: '(262) 638-5630', email: 'last_samurai@earth.com' },
-        { _id: 11, name: 'Katie Bowman', phoneNumber: '(405) 951-0149', email: 'phantom_lady@example.com' },
-        { _id: 12, name: 'Bill Anderson', phoneNumber: '(848) 778-9626', email: 'ilove@angular.js' },
-        { _id: 13, name: 'Ray Jennings', phoneNumber: '(160) 711-4649', email: 'putdownmyhammer@maiasdl.com' },
-    ];
-
-    if (storageContacts !== null) {
-        contacts = storageContacts;
-    } else {
-        updateLocalStorage(contacts);
-    }
 
     function updateLocalStorage(contacts) {
         storage.setItem('contacts', JSON.stringify(contacts));
     }
 
-    let currentId = getCurrentId();
+    // functions for get and process contacts from json;
+
+    function getInitContacts() {
+        return $http.get('./initData/contacts.json')
+        .then(res => res.data)
+    }
+
+    function updateContacts(newContacts) {
+        contacts = newContacts;
+    }
+
+    // function for get max id from the contact list;
 
     function getCurrentId() {
         const lastId = contacts.reduce((maxId, nextContact) => {
@@ -41,9 +31,24 @@ function ContactsService($window, $http) {
         return lastId + 1;
     }
 
-    function getContact(id) {
-        return contacts.find(contact => contact._id === id);
+    // set contacts and currentId depending on localStorage
+
+    let contacts
+    let currentId;
+
+    if (storageContacts !== null) {
+        updateContacts(storageContacts);
+        currentId = getCurrentId();
+    } else {
+        getInitContacts()
+        .then(updateContacts)
+        .then(() => {
+            currentId = getCurrentId();
+            updateLocalStorage(contacts);
+        });
     }
+
+    // ContactsService methods
 
     function getAll() {
         return contacts;
@@ -64,9 +69,10 @@ function ContactsService($window, $http) {
         updateLocalStorage(contacts);
     }
 
-
     function updateContact(updatedContact) {
-        const oldContact = getContact(updatedContact._id)
+        const oldContact = contacts.find((contact) => (
+            contact._id === updatedContact._id
+        ));
         const contactIndex = contacts.indexOf(oldContact);
 
         contacts.splice(contactIndex, 1, updatedContact);
@@ -80,3 +86,6 @@ function ContactsService($window, $http) {
         updateContact,
     };
 };
+
+angular.module('app')
+    .factory('ContactsService',['$window', '$http', ContactsService]);
