@@ -1,0 +1,9 @@
+<ul>
+    <li bindonce ng-repeat="contact in contacts | orderBy: 'name' | contactsFilter: filterValue track by contact._id">
+        <contact
+            contact="contact"
+            highlight="{{::contact.name}}"
+            remove-contact="removeContact">
+        </contact>
+    </li>
+</ul>

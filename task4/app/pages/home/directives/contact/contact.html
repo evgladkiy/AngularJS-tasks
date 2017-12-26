@@ -1,0 +1,11 @@
+<span class="user-name" bo-bind="contact.name"></span>
+<span class="user-phone" bo-bind="contact.phoneNumber"></span>
+<a class="user-email" bo-href="'mailto:'+contact.email" bo-bind="contact.email"></a>
+<div class="contacts-btns__container">
+     <a ui-sref="editContact({ id: contact._id })">
+         <i class="fa fa-pencil" aria-hidden="true"></i>
+     </a>
+     <button ng-click="removeContact(contact)">
+        <i class="fa fa-trash-o" aria-hidden="true"></i>
+     </button>
+</div>
